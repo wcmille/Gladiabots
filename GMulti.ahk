@@ -4,16 +4,42 @@
   SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #include GladiaLib.ahk
+  validInput := 0
+  While(NOT ValidInput)
+  {
+    InputBox, numRuns, "GladiabotMulti", "How many runs would you like to perform?"
+
+    if ErrorLevel
+    {
+      MsgBox, "Canceled"
+      return
+    }
+
+    if(numRuns is digit)
+    {
+      validInput := 1
+    }
+  }
 
   CoordMode, Mouse, Relative
-  if WinExist("Gladiabots")
-	WinActivate
-  win := "Wins:`n"
-  MultiBot(250)
-
+  if(WinExist("Gladiabots"))
+  {
+    MsgBox, You have 10 seconds to select the Gladiabots window.
+    WinWaitActive, Gladiabots, , 10
+    if ErrorLevel
+    {
+      MsgBox, You need to select Gladiabots window.
+    }
+    else
+    {
+      MsgBox, "Window Active!"
+      win := "Wins:`n"
+      MultiBot(numRuns)
+    }
+  }
   ; FileDelete, C:\Users\Wayne\Desktop\Gladia\Results.txt
   ; FileAppend, %win%, C:\Users\Wayne\Desktop\Gladia\Results.txt
   ; Run, Notepad.exe C:\Users\Wayne\Desktop\Gladia\Results.txt
-  MsgBox, Done
+  MsgBox, Exiting
   Return
 
